@@ -1,0 +1,19 @@
+{
+    "name": "ahmedtaha-dev/telr-payment-gateway",
+    "description": "A package for integrating with Telr payment gateway",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "AhmedTaha\\Telr\\": "src/",
+            "AhmedTaha\\Telr\\Tests\\": "tests/"
+        }
+    },
+    "require": {
+        "illuminate/support": "^9.0|^10.0|^11.0|^12.0",
+        "illuminate/http": "^9.0|^10.0|^11.0|^12.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^11.5",
+        "orchestra/testbench": "^10.11"
+    }
+}
