@@ -2,8 +2,6 @@
 
 namespace AhmedTaha\Telr\DTO;
 
-use function Laravel\Prompts\number;
-
 class TelrSdkDTO
 {
     public string $cartid;
@@ -13,14 +11,14 @@ class TelrSdkDTO
     public string $customerRef;
     public string $customerEmail;
 
-    public function __construct(array $data)
+    public function __construct(string $orderReference, float $amount, string $currency, string $description, string $customerRef = '', string $customerEmail = '')
     {
-        $this->cartid = $data['cartid'];
-        $this->amount = $data['amount'];
-        $this->currency = $data['currency'];
-        $this->description = $data['description'];
-        $this->customerRef = $data['customer']['ref'] ?? '';
-        $this->customerEmail = $data['customer']['email'] ?? '';
+        $this->cartid = $orderReference;
+        $this->amount = $amount;
+        $this->currency = $currency;
+        $this->description = $description;
+        $this->customerRef = $customerRef;
+        $this->customerEmail = $customerEmail;
     }
 
     public function toArray(): array
@@ -31,7 +29,6 @@ class TelrSdkDTO
                 'value' => number_format($this->amount, 2, '.', ''),
                 'currency' => $this->currency,
             ],
-            'currency' => $this->currency,
             'description' => $this->description,
             'customer' => [
                 'ref' => $this->customerRef,

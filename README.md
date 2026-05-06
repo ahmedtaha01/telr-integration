@@ -72,24 +72,39 @@ Use the base URL from [Telr’s developer documentation](https://docs.telr.com/)
 
 ### Create an SDK payment order
 
-Build a `TelrSdkDTO` with your cart and customer details, then call `createSDKPaymentTransaction`. The `test` flag in the request body is set automatically from `TELR_MODE`.
+Build a `TelrSdkDTO` with your order reference, amount, currency, and description. Customer `ref` and `email` are optional (default empty string). Then call `createSDKPaymentTransaction`. The `test` flag in the request body is set automatically from `TELR_MODE`.
+
+`TelrSdkDTO` maps the first argument to Telr’s `cartid` field internally.
+
+| Constructor argument | Maps to | Required |
+|---------------------|---------|----------|
+| `$orderReference` | `cartid` | Yes |
+| `$amount` | `amount.value` (2 decimal places) | Yes |
+| `$currency` | `amount.currency` | Yes |
+| `$description` | `description` | Yes |
+| `$customerRef` | `customer.ref` | No (default `''`) |
+| `$customerEmail` | `customer.email` | No (default `''`) |
 
 ```php
 use AhmedTaha\Telr\DTO\TelrSdkDTO;
 use AhmedTaha\Telr\Facades\Telr;
 
-$dto = new TelrSdkDTO([
-    'cartid' => 'ORDER-10042',
-    'amount' => 99.50,
-    'currency' => 'AED',
-    'description' => 'Order payment',
-    'customer' => [
-        'ref' => 'user-42',
-        'email' => 'customer@example.com',
-    ],
-]);
+$dto = new TelrSdkDTO(
+    orderReference: 'ORDER-10042',
+    amount: 99.50,
+    currency: 'AED',
+    description: 'Order payment',
+    customerRef: 'user-42',
+    customerEmail: 'customer@example.com',
+);
 
 $result = Telr::createSDKPaymentTransaction($dto);
+```
+
+Minimal example without customer details:
+
+```php
+$dto = new TelrSdkDTO('ORDER-10042', 99.50, 'AED', 'Order payment');
 ```
 
 Returned array keys:
